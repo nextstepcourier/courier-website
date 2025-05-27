@@ -1,12 +1,19 @@
 
-const apiKey = 'YOUR_OPENROUTESERVICE_API_KEY'; // Replace with your actual API key
+const apiKey = '5b3ce3597851110001cf624816a1ea58e2424d06998cc3e936a8c442'; // Replace with your OpenRouteService API key
+
+const map = L.map('map').setView([54.5, -3], 6);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+let routeLayer;
 
 async function calculate() {
   const from = document.getElementById('from').value;
   const to = document.getElementById('to').value;
 
-  const geocode = async (postcode) => {
-    const res = await fetch(`https://api.openrouteservice.org/geocode/search?api_key=${apiKey}&text=${postcode}`);
+  const geocode = async (location) => {
+    const res = await fetch(`https://api.openrouteservice.org/geocode/search?api_key=${apiKey}&text=${encodeURIComponent(location)}`);
     const data = await res.json();
     return data.features[0].geometry.coordinates;
   };
@@ -33,7 +40,12 @@ async function calculate() {
     const totalPrice = (distanceMiles * pricePerMile).toFixed(2);
 
     document.getElementById('result').innerText = `Distance: ${distanceMiles} miles\nPrice: £${totalPrice}`;
+
+    if (routeLayer) map.removeLayer(routeLayer);
+    routeLayer = L.geoJSON(data).addTo(map);
+    map.fitBounds(routeLayer.getBounds());
+
   } catch (err) {
-    document.getElementById('result').innerText = "Error: check postcodes.";
+    document.getElementById('result').innerText = "Error: Could not calculate route. Check input.";
   }
 }

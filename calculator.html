@@ -2,18 +2,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Courier Calculator</title>
+  <title>Courier Price Calculator with Map</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 300px;
+      margin-top: 20px;
+    }
+    label {
+      display: block;
+      margin: 10px 0;
+    }
+  </style>
 </head>
 <body>
-  <header><h1>Price Calculator</h1></header>
+  <header><h1>Courier Price Calculator (UK)</h1></header>
   <main>
-    <label>Pickup Postcode: <input type="text" id="from" /></label><br/>
-    <label>Delivery Postcode: <input type="text" id="to" /></label><br/>
+    <label>Pickup (City or Postcode): <input type="text" id="from" /></label>
+    <label>Delivery (City or Postcode): <input type="text" id="to" /></label>
     <button onclick="calculate()">Calculate</button>
     <p id="result"></p>
+    <div id="map"></div>
   </main>
   <footer>&copy; 2025 FastTrack Couriers</footer>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
